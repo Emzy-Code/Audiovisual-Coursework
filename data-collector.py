@@ -2,7 +2,7 @@
 # This file is used to record data and automatically place it within data folder
 # each file should have the format of name(0-9)(0-9).wav (example: ryan00.wav)
 # sound device used - :
-# voice actor - :
+# voice actor - Emilija:
 
 import sounddevice as sd
 import soundfile as sf
