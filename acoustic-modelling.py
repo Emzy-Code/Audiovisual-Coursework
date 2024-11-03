@@ -44,7 +44,28 @@ data = np.array(data)
 data = data / np.max(data)
 
 LE = LabelEncoder()
-classes = ['muneeb', '', '2', '3', '4', '5', '6', '7', '8', '9']
+classes = [
+'Muneeb',
+'Zachary',
+'Sebastian',
+'Danny',
+'Louis',
+'Ben',
+'Seb',
+'Ryan',
+'Krish',
+'Christopher',
+'Kaleb',
+'Konark',
+'Amelia',
+'Emilija',
+'Naima',
+'Leo',
+'Noah',
+'Josh',
+'Joey',
+'Kacper'
+]
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
 X_train, X_tmp, y_train, y_tmp = train_test_split(data, labels, test_size=0.2, random_state=0)
