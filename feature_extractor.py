@@ -37,15 +37,16 @@ def mfccVectors(soundfile):
     mel_magnitudes = np.log(mel_magnitudes + 0.000000000000000001)
 
 
-    mfccVectors = dct(mel_magnitudes,type=2,norm='ortho')
+    mel_magnitudes = dct(mel_magnitudes,type=2,norm='ortho')
     return mel_magnitudes
 
 
 def mfccFileCreator():
-    for audiofile in sorted(glob.glob('audio/*.wav')):
+    for audiofile in sorted(glob.glob('training_data/audio/*.wav')):
         mfccData = mfccVectors(audiofile)
-        mfccName = audiofile.removeprefix('audio\\').replace(".wav", ".npy")
-        filepath = 'mfccs/' + mfccName
+        print(audiofile)
+        mfccName = audiofile.removeprefix('training_data/audio').replace(".wav", ".npy")
+        filepath = 'training_data/mfccs/' + mfccName
         np.save(filepath, mfccData)
 
 
@@ -102,6 +103,4 @@ def linearRectangularFilterbank(magspec, fbankNum):
 
 
 mfccFileCreator()
-mfcc_file = np.load('mfccs/a.npy')
-plt.imshow(mfcc_file, origin='lower')
-plt.show()
+
