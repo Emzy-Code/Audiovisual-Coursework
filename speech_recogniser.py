@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from keras._tf_keras.keras.utils import to_categorical
-
+from sklearn.preprocessing import LabelEncoder
 max_frames = 21
 labels = []
 data = []

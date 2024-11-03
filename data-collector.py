@@ -12,7 +12,7 @@ fs = 16000
 seconds = 5
 r = sd.rec(seconds * fs, samplerate=fs, channels=1)
 sd.wait()
-sf.write('christopher/bbbbbbbbbb.wav', r, fs) #change wav file name using naming convension above
+sf.write('kaleb/bbbbbbbbbb.wav', r, fs) #change wav file name using naming convension above
 #r2, fs2 = sf.read('muneeb/a.wav', dtype='float32')
 #sd.play(r2,fs2)
 #sd.wait()
