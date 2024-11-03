@@ -40,6 +40,7 @@ for mfcc_file in sorted(glob.glob('mfccs/*.npy')):
     label = stemFilename.split('_')
     labels.append(label[0])
 labels = np.array(labels)
+print(labels)
 data = np.array(data)
 data = data / np.max(data)
 
@@ -64,10 +65,21 @@ classes = [
 'Noah',
 'Josh',
 'Joey',
-'Kacper'
+'Kacper',
 ]
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
 X_train, X_tmp, y_train, y_tmp = train_test_split(data, labels, test_size=0.2, random_state=0)
 X_val, X_test, y_val, y_test = train_test_split(X_tmp, y_tmp, test_size=0.5, random_state=0)
+learning_rate = 0.01
+model = create_model()
+model.compile(loss='categorical_crossentropy',
+              metrics=['accuracy'], optimizer=Adam(learning_rate=learning_rate))
+model.summary()
 
+num_epochs = 64
+num_batch_size = 32
+
+history = model.fit(X_train, y_train, validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,
+                    verbose=1)
+model.save_weights('name_classification.h5')

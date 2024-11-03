@@ -35,7 +35,9 @@ def mfccVectors(soundfile):
 
     mel_magnitudes = np.dot(all_magnitudes, mel_vector.T)
     mel_magnitudes = np.log(mel_magnitudes + 0.000000000000000001)
-    # mfccVectors = dct(mel_magnitudes,type=2,norm='ortho')
+
+
+    mfccVectors = dct(mel_magnitudes,type=2,norm='ortho')
     return mel_magnitudes
 
 
