@@ -45,7 +45,7 @@ def mfccFileCreator():
     for audiofile in sorted(glob.glob('training_data/audio/*.wav')):
         mfccData = mfccVectors(audiofile)
         print(audiofile)
-        mfccName = audiofile.removeprefix('training_data/audio\\').replace(".wav", ".npy")
+        mfccName = audiofile.removeprefix('training_data/audio').replace(".wav", ".npy")
         filepath = 'training_data/mfccs/' + mfccName
         np.save(filepath, mfccData)
 
