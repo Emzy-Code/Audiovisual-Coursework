@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 
 
 def create_model():
-    numClasses = 6
+    numClasses = 18
     model = Sequential()
     model.add(InputLayer(input_shape=(156, 21, 1)))
     model.add(Conv2D(64, (3, 3), activation='relu'))
@@ -47,25 +47,23 @@ data = data / np.max(data)
 LE = LabelEncoder()
 classes = [
 'Muneeb',
-#'Zachary',
+'Zachary',
 'Sebastian',
 'Danny',
 'Louis',
-'Ben'
-    ,
+'Ben',
 'Seb',
 'Ryan',
 'Krish',
-'Christopher'
-    #,
-#'Kaleb',
-#'Konark',
-#'Amelia',
-#'Emilija',
-#'Naima',
-#'Leo',
-#'Noah',
-#'Josh',
+'Christopher',
+'Kaleb',
+'Konark',
+'Amelia',
+'Emilija',
+'Naima',
+'Leo',
+'Noah',
+'Josh',
 #'Joey',
 #'Kacper',
 ]
