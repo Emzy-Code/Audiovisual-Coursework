@@ -1,8 +1,6 @@
 # -Created 23 Oct, Emilija
-# This file is used to record audio and automatically place it within audio folder
-# each file should have the format of name_number.wav (example: ryan_0.wav)
-# sound device used - :
-# voice actor - Emilija:
+# This file is used to record audio and automatically store it within the training_data folder for later use
+
 
 
 import sounddevice as sd
