@@ -31,7 +31,7 @@ def mfccVectors(soundfile):
     all_magnitudes = byFrameSpectraCalculator(x, samplerate, numFrames)
 
     print(len(all_magnitudes))
-    mel_vector = mel_vector_creator(10, 256, 8000)
+    mel_vector = mel_vector_creator(20, 256, 8000)
 
     mel_magnitudes = np.dot(all_magnitudes, mel_vector.T)
     mel_magnitudes = np.log(mel_magnitudes + 0.000000000000000001)

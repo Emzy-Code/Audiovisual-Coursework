@@ -48,13 +48,13 @@ LE = LabelEncoder()
 classes = [
 'Muneeb',
 #'Zachary',
-#'Sebastian',
+'Sebastian',
 'Danny',
 'Louis',
 'Ben'
     ,
-#'Seb',
-#'Ryan',
+'Seb',
+'Ryan',
 'Krish',
 'Christopher'
     #,
@@ -79,8 +79,8 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'], optimizer=Adam(learning_rate=learning_rate))
 model.summary()
 
-num_epochs = 64
-num_batch_size = 32
+num_epochs = 30
+num_batch_size = 20
 
 history = model.fit(X_train, y_train, validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,
                     verbose=1)
@@ -117,7 +117,7 @@ predicted_prob = model.predict(np.expand_dims(X_test[0, :, :],
                                               axis=0), verbose=0)
 predicted_id = np.argmax(predicted_prob, axis=1)
 predicted_class = LE.inverse_transform(predicted_id)
-
+print(predicted)
 confusion_matrix = metrics.confusion_matrix(
     np.argmax(y_test, axis=1), predicted)
 cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix)
