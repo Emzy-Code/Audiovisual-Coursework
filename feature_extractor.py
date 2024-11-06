@@ -2,15 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import soundfile as sf
 import sounddevice as sd
-from spyder_kernels.utils.lazymodules import scipy
+from math import floor
 import glob
 from scipy.fftpack import dct
 
 
-def byFrameSpectraCalculator(x, sampleRate, numFrames):
-    frameLength = int(len(x) / numFrames)
+def byFrameSpectraCalculator(x,frameLength):
+    numSamples = len(x)
+    numFrames = floor(numSamples / frameLength)
     all_magnitudes = []
-
     for frame in range(0, numFrames):
         firstSample = frame * frameLength
         # floor(frameLength/2) <- replace with frameLength to make frames overlap
@@ -25,13 +25,11 @@ def mfccVectors(soundfile):
     x, samplerate = sf.read(soundfile)
 
 
-    numFrames = 156
 
-    frameLength = int(len(x) / numFrames)
-    all_magnitudes = byFrameSpectraCalculator(x, samplerate, numFrames)
+    all_magnitudes = byFrameSpectraCalculator(x,960)
 
     print(len(all_magnitudes))
-    mel_vector = mel_vector_creator(20, 256, 8000)
+    mel_vector = mel_vector_creator(20, 480, 48000)
 
     mel_magnitudes = np.dot(all_magnitudes, mel_vector.T)
     mel_magnitudes = np.log(mel_magnitudes + 0.000000000000000001)
@@ -45,7 +43,7 @@ def mfccFileCreator():
     for audiofile in sorted(glob.glob('training_data/audio/*.wav')):
         mfccData = mfccVectors(audiofile)
         print(audiofile)
-        mfccName = audiofile.removeprefix('training_data/audio\\').replace(".wav", ".npy")
+        mfccName = audiofile.removeprefix('training_data/audio').replace(".wav", ".npy")
         filepath = 'training_data/mfccs/' + mfccName
         np.save(filepath, mfccData)
 
