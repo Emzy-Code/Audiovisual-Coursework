@@ -92,6 +92,7 @@ predicted_prob = model.predict(np.expand_dims(X[0, :, :],
                                               axis=0), verbose=0)
 predicted_id = np.argmax(predicted_prob, axis=1)
 
+
 predicted_classes = []
 
 for i in range(len(predicted)):
@@ -110,3 +111,4 @@ for i in range(len(predicted_classes)):
     result[finalPositions[i]] = predicted_classes[i]
 
 print(result)
+

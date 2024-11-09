@@ -75,6 +75,30 @@ data = data / np.max(data)
 
 LE = LabelEncoder()
 
+
+classes = [
+    'Muneeb',
+    'Zachary',
+    'Sebastian',
+    'Danny',
+    'Louis',
+    'Ben',
+    'Seb',
+    'Ryan',
+    'Krish',
+    'Christopher',
+    'Kaleb',
+    'Konark',
+    'Amelia',
+    'Emilija',
+    'Naima',
+    'Leo',
+    'Noah',
+    'Josh',
+    'Joey',
+    'Kacper',
+]
+
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
 print("data len", len(data))
@@ -139,11 +163,7 @@ for i in range(len(predicted)):
 print(actualLabels)
 print(predictedLabels)
 
-confusion_matrix = metrics.confusion_matrix(
-
-
-
-    actual, predicted, labels=list(range(20)))
+confusion_matrix = metrics.confusion_matrix(actual, predicted, labels=list(range(20)))
 cm_display =(
     metrics.ConfusionMatrixDisplay
     (confusion_matrix=confusion_matrix,display_labels=matrixLabels)
