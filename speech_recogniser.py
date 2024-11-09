@@ -63,7 +63,6 @@ predicted_prob = model.predict(np.expand_dims(X[0, :, :],
 predicted_id = np.argmax(predicted_prob, axis=1)
 predicted_class = LE.inverse_transform(predicted_id)
 predicted_classes = []
-for i in len(predicted):
-    predicted_classes.append(LE.inverse_transform(predicted[i]))
 
-print(predicted_classes)
+
+print(predicted)

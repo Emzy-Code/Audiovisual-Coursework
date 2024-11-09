@@ -13,11 +13,7 @@ from sklearn.model_selection import train_test_split
 import pickle
 from tensorflow import _tf_uses_legacy_keras
 
-<<<<<<< HEAD
 
-def create_model():
-    numClasses = 20
-=======
 classes = [
 'Muneeb',
 'Zachary',
@@ -43,8 +39,6 @@ classes = [
 
 def create_model():
     numClasses = len(classes)
-
->>>>>>> a88e421eace644b7f8437276ff344e9e93ebfb5e
     model = Sequential()
     model.add(InputLayer(shape=(250, 21, 1)))
     model.add(Conv2D(64, (3, 3), activation='relu'))
@@ -78,7 +72,7 @@ data = np.array(data)
 data = data / np.max(data)
 
 LE = LabelEncoder()
-<<<<<<< HEAD
+
 classes = [
     'Muneeb',
     'Zachary',
@@ -101,8 +95,7 @@ classes = [
     'Joey',
     'Kacper',
 ]
-=======
->>>>>>> a88e421eace644b7f8437276ff344e9e93ebfb5e
+
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
 print("data len", len(data))
@@ -155,32 +148,9 @@ predicted_prob = model.predict(np.expand_dims(X_test[0, :, :],
                                               axis=0), verbose=0)
 predicted_id = np.argmax(predicted_prob, axis=1)
 predicted_class = LE.inverse_transform(predicted_id)
-<<<<<<< HEAD
-matrixLabels = [
-    'Muneeb',
-    'Zachary',
-    'Sebastian',
-    'Danny',
-    'Louis',
-    'Ben',
-    'Seb',
-    'Ryan',
-    'Krish',
-    'Christopher',
-    'Kaleb',
-    'Konark',
-    'Amelia',
-    'Emilija',
-    'Naima',
-    'Leo',
-    'Noah',
-    'Josh',
-    'Joey',
-    'Kacper',
-]
-=======
+
 matrixLabels = classes
->>>>>>> a88e421eace644b7f8437276ff344e9e93ebfb5e
+
 actualLabels = []
 predictedLabels = []
 for i in range(len(predicted)):
@@ -190,16 +160,13 @@ print(actualLabels)
 print(predictedLabels)
 
 confusion_matrix = metrics.confusion_matrix(
-<<<<<<< HEAD
-    actual, predicted, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
-cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix, display_labels=matrixLabels)
-=======
+
     actual, predicted, labels=list(range(20)))
 cm_display =(
     metrics.ConfusionMatrixDisplay
     (confusion_matrix=confusion_matrix,display_labels=matrixLabels)
     )
->>>>>>> a88e421eace644b7f8437276ff344e9e93ebfb5e
+
 
 cm_display.plot(xticks_rotation=90)
 plt.show()
