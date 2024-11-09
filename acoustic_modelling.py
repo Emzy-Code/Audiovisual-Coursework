@@ -10,10 +10,12 @@ from keras._tf_keras.keras.layers import Dense, Activation, Flatten, Conv2D, Inp
 from keras._tf_keras.keras.optimizers import Adam
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+import pickle
 from tensorflow import _tf_uses_legacy_keras
 
+
 def create_model():
-    numClasses = 18
+    numClasses = 20
     model = Sequential()
     model.add(InputLayer(input_shape=(250, 21, 1)))
     model.add(Conv2D(64, (3, 3), activation='relu'))
@@ -24,6 +26,8 @@ def create_model():
     model.add(Dense(numClasses))
     model.add(Activation('softmax'))
     return model
+
+
 
 
 data = []
@@ -46,26 +50,26 @@ data = data / np.max(data)
 
 LE = LabelEncoder()
 classes = [
-'Muneeb',
-'Zachary',
-'Sebastian',
-'Danny',
-'Louis',
-'Ben',
-'Seb',
-'Ryan',
-'Krish',
-'Christopher',
-'Kaleb',
-'Konark',
-'Amelia',
-'Emilija',
-'Naima',
-'Leo',
-'Noah',
-'Josh',
-#'Joey',
-#'Kacper',
+    'Muneeb',
+    'Zachary',
+    'Sebastian',
+    'Danny',
+    'Louis',
+    'Ben',
+    'Seb',
+    'Ryan',
+    'Krish',
+    'Christopher',
+    'Kaleb',
+    'Konark',
+    'Amelia',
+    'Emilija',
+    'Naima',
+    'Leo',
+    'Noah',
+    'Josh',
+    'Joey',
+    'Kacper',
 ]
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
@@ -79,15 +83,14 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'], optimizer=Adam(learning_rate=learning_rate))
 model.summary()
 
-
 num_epochs = 30
 num_batch_size = 20
-#comment
+# comment
 
 history = model.fit(X_train, y_train, validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,
                     verbose=1)
 model.save_weights('name_classification.weights.h5')
-
+model.save('my_model.keras')
 model = create_model()
 
 model.compile(loss='categorical_crossentropy',
@@ -121,26 +124,26 @@ predicted_prob = model.predict(np.expand_dims(X_test[0, :, :],
 predicted_id = np.argmax(predicted_prob, axis=1)
 predicted_class = LE.inverse_transform(predicted_id)
 matrixLabels = [
-'Muneeb',
-'Zachary',
-'Sebastian',
-'Danny',
-'Louis',
-'Ben',
-'Seb',
-'Ryan',
-'Krish',
-'Christopher',
-'Kaleb',
-'Konark',
-'Amelia',
-'Emilija',
-'Naima',
-'Leo',
-'Noah',
-'Josh',
-'Joey',
-'Kacper',
+    'Muneeb',
+    'Zachary',
+    'Sebastian',
+    'Danny',
+    'Louis',
+    'Ben',
+    'Seb',
+    'Ryan',
+    'Krish',
+    'Christopher',
+    'Kaleb',
+    'Konark',
+    'Amelia',
+    'Emilija',
+    'Naima',
+    'Leo',
+    'Noah',
+    'Josh',
+    'Joey',
+    'Kacper',
 ]
 actualLabels = []
 predictedLabels = []
@@ -151,10 +154,9 @@ print(actualLabels)
 print(predictedLabels)
 
 confusion_matrix = metrics.confusion_matrix(
-    actual, predicted,labels=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19])
-cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix,display_labels=matrixLabels)
+    actual, predicted, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix, display_labels=matrixLabels)
 
 cm_display.plot(xticks_rotation=90)
 plt.show()
 model = create_model()
-
