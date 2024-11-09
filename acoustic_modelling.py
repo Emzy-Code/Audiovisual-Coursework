@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from tensorflow import _tf_uses_legacy_keras
 
 def create_model():
-    numClasses = 20
+    numClasses = 18
     model = Sequential()
     model.add(InputLayer(input_shape=(250, 21, 1)))
     model.add(Conv2D(64, (3, 3), activation='relu'))
@@ -64,8 +64,8 @@ classes = [
 'Leo',
 'Noah',
 'Josh',
-'Joey',
-'Kacper',
+#'Joey',
+#'Kacper',
 ]
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
@@ -79,8 +79,10 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'], optimizer=Adam(learning_rate=learning_rate))
 model.summary()
 
-num_epochs = 32
-num_batch_size = 64
+
+num_epochs = 30
+num_batch_size = 20
+#comment
 
 history = model.fit(X_train, y_train, validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,
                     verbose=1)
