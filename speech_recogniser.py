@@ -1,8 +1,13 @@
 import glob
+import re
+from typing import final
+
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 from pathlib import Path
+
+from numba.core.cgutils import sizeof
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from keras._tf_keras.keras.utils import to_categorical
@@ -32,17 +37,41 @@ classes = ['Muneeb',
 'Josh',
 'Joey',
 'Kacper']
+classes = sorted(classes)
+print("classes: ", classes)
 max_frames = 21
 labels = []
 data = []
+orderedList = []
+unorderedList = []
 
 for mfcc_file in sorted(glob.glob('test_data/mfccs/*.npy')):
     mfcc_data = np.load(mfcc_file)
     mfcc_data = np.pad(mfcc_data, ((0, 0), (0, max_frames - mfcc_data.shape[1])))
     data.append(mfcc_data)
     stemFilename = (Path(os.path.basename(mfcc_file))).stem
+    orderedList.append(stemFilename)
+    unorderedList.append(stemFilename)
     label = stemFilename.split('_')
     labels.append(label[0])
+
+
+positions = []
+finalPositions = []
+
+def get_number(order):
+    num = order.split('_')[1]
+    print("num: ", num)
+    return int(num)
+
+print("order: ", orderedList)
+orderedList = (sorted(orderedList, key = lambda order: get_number(order)))
+print("sorted: ", orderedList)
+for i in range(len(orderedList)):
+    positions.append(i)
+
+print("labels: ", labels)
+print("Final Pos: " ,finalPositions)
 LE = LabelEncoder()
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
@@ -53,17 +82,31 @@ X,y = data,labels
 model = load_model("my_model.keras")
 predicted_probs = model.predict(X, verbose=0)
 predicted = np.argmax(predicted_probs, axis=1)
+print("Predicted: ", predicted)
 actual = np.argmax(y, axis=1)
-print(np.unique(predicted))
+#print(np.unique(predicted))
 accuracy = metrics.accuracy_score(actual, predicted)
 print(f'Accuracy: {accuracy * 100}%')
-print(X[0, :, :])
+#print(X[0, :, :])
 predicted_prob = model.predict(np.expand_dims(X[0, :, :],
                                               axis=0), verbose=0)
 predicted_id = np.argmax(predicted_prob, axis=1)
-predicted_class = LE.inverse_transform(predicted_id)
-predicted_classes = []
-for i in len(predicted):
-    predicted_classes.append(LE.inverse_transform(predicted[i]))
 
-print(predicted_classes)
+predicted_classes = []
+
+for i in range(len(predicted)):
+    predicted_classes.append(classes[predicted[i]])
+
+result=[]
+for i in range(len(unorderedList)):
+    result.append(0)
+    finalPositions.append(orderedList.index(unorderedList[i]))
+
+print(positions)
+print(finalPositions)
+
+
+for i in range(len(predicted_classes)):
+    result[finalPositions[i]] = predicted_classes[i]
+
+print(result)
