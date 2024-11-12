@@ -31,8 +31,6 @@ def mfccVectors(soundfile):    #creates mfcc vectors for a sound file
 
 
     all_magnitudes = byFrameSpectraCalculator(x,960)
-
-    print(len(all_magnitudes))
     mel_vector = mel_vector_creator(20, 480, 48000)
 
     mel_magnitudes = np.dot(all_magnitudes, mel_vector.T)
@@ -46,9 +44,9 @@ def mfccVectors(soundfile):    #creates mfcc vectors for a sound file
 def mfccFileCreator(): ## creates mfcc files for entire folder
     for audiofile in sorted(glob.glob('test_data/audio/*.wav')):
         mfccData = mfccVectors(audiofile)
-        print(audiofile)
         mfccName = audiofile.removeprefix('test_data/audio').replace(".wav", ".npy")
         filepath = 'test_data/mfccs/' + mfccName
+        print(filepath)
         np.save(filepath, mfccData)
 
 
@@ -110,4 +108,5 @@ mfccFileCreator()
 
 mfcc_path = 'training_data/mfccs/Amelia_06.npy'
 mfcc  = np.load(mfcc_path)
-
+plt.imshow(mfcc)
+plt.show()
