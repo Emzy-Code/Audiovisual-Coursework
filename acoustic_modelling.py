@@ -1,3 +1,10 @@
+# >>>>>>>>>>>>>>>>>>>>>    Machine Learning - Speech     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+### This file takes in mfcc.npy files and uses them to train data according to various vals and configs
+#Outputs: Accuracy score and graphs for val loss and accuracy,
+# creates "my_model.keras" file to be used for speech_recognisers
+
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 import glob
@@ -10,8 +17,7 @@ from keras._tf_keras.keras.layers import Dense, Activation, Flatten, Conv2D, Inp
 from keras._tf_keras.keras.optimizers import Adam
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-import pickle
-from tensorflow import _tf_uses_legacy_keras
+
 
 
 classes = [
@@ -111,14 +117,14 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'], optimizer=Adam(learning_rate=learning_rate))
 model.summary()
 
-num_epochs = 30
-num_batch_size = 20
+num_epochs = 20    # gives ~80%
+num_batch_size = 15
 # comment
 
 history = model.fit(X_train, y_train, validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,
                     verbose=1)
 model.save_weights('name_classification.weights.h5')
-model.save('my_model.keras')
+model.save('my_model.keras') # comment out whilst debugging
 model = create_model()
 
 model.compile(loss='categorical_crossentropy',

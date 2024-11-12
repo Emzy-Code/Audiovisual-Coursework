@@ -106,7 +106,7 @@ mfccFileCreator()
 
 ### EXAMPLE MFCC GRAPH
 
-mfcc_path = 'training_data/mfccs/Amelia_06.npy'
-mfcc  = np.load(mfcc_path)
-plt.imshow(mfcc)
-plt.show()
+#mfcc_path = 'training_data/mfccs/Amelia_06.npy'
+#mfcc  = np.load(mfcc_path)
+#plt.imshow(mfcc)
+#plt.show()
