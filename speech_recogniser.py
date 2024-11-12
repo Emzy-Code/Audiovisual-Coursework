@@ -113,6 +113,10 @@ if len(labels)>0:
     for i in range(len(predicted_classes)):
         result[finalPositions[i]] = predicted_classes[i]
 
-    print(result)
+    originalNames = []
+    for i in range(len(orderedList)):
+        originalNames.append(orderedList[i].split('_')[0])
+    print("Original Names: ", originalNames)
+    print("Result Names:   ", result)
 else:
     print("No audio files. Please re-run.")
