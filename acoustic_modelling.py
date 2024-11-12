@@ -1,8 +1,7 @@
 # >>>>>>>>>>>>>>>>>>>>>    Machine Learning - Speech     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-### This file takes in mfcc.npy files and uses them to train data according to various vals and configs
-#Outputs: Accuracy score and graphs for val loss and accuracy,
-# creates "my_model.keras" file to be used for speech_recognisers
-
+# This file takes in mfcc.npy files and uses them to train data according to various vals and configs
+# Outputs: Accuracy score and graphs for val loss and accuracy,
+# creates "my_model.keras" file to be used for speech_recogniser
 
 
 import matplotlib.pyplot as plt
@@ -17,6 +16,7 @@ from keras._tf_keras.keras.layers import Dense, Activation, Flatten, Conv2D, Inp
 from keras._tf_keras.keras.optimizers import Adam
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+
 
 
 
@@ -44,6 +44,7 @@ classes = [
 ]
 classes = sorted(classes)
 
+
 def create_model():
     numClasses = len(classes)
 
@@ -57,7 +58,6 @@ def create_model():
     model.add(Dense(numClasses))
     model.add(Activation('softmax'))
     return model
-
 
 
 
@@ -80,6 +80,7 @@ data = np.array(data)
 data = data / np.max(data)
 
 LE = LabelEncoder()
+
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
 print("data len", len(data))
@@ -99,7 +100,7 @@ num_batch_size = 15
 history = model.fit(X_train, y_train,
                     validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,verbose=1)
 model.save_weights('name_classification.weights.h5')
-model.save('my_model.keras') # comment out whilst debugging
+model.save('my_model.keras')  # comment out whilst debugging
 model = create_model()
 
 model.compile(loss='categorical_crossentropy',
@@ -134,7 +135,6 @@ predicted_prob = (model.predict(np.expand_dims(X_test[0, :, :], axis=0), verbose
 predicted_id = np.argmax(predicted_prob, axis=1)
 predicted_class = LE.inverse_transform(predicted_id)
 
-
 matrixLabels = classes
 
 actualLabels = []
@@ -145,11 +145,10 @@ for i in range(len(predicted)):
 print(actualLabels)
 print(predictedLabels)
 confusion_matrix = metrics.confusion_matrix(actual, predicted, labels=list(range(20)))
-cm_display =(
+cm_display = (
     metrics.ConfusionMatrixDisplay
-    (confusion_matrix=confusion_matrix,display_labels=matrixLabels)
-    )
-
+    (confusion_matrix=confusion_matrix, display_labels=matrixLabels)  # labels data with corresponding names
+)
 
 cm_display.plot(xticks_rotation=90)
 plt.show()
