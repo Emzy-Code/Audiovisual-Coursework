@@ -1,3 +1,5 @@
+#used to resample data
+
 import glob
 import librosa
 import soundfile as sf

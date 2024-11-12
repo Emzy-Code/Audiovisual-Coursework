@@ -1,13 +1,17 @@
+#>>>>>>>>>>>>>>>> feature_extractor - converts audio files to mfccs
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import soundfile as sf
-import sounddevice as sd
 from math import floor
 import glob
 from scipy.fftpack import dct
 
 
-def byFrameSpectraCalculator(x,frameLength):
+
+
+def byFrameSpectraCalculator(x,frameLength): #calculates magnitudes by frame
     numSamples = len(x)
     numFrames = floor(numSamples / frameLength)
     all_magnitudes = []
@@ -21,7 +25,7 @@ def byFrameSpectraCalculator(x,frameLength):
     return all_magnitudes
 
 
-def mfccVectors(soundfile):
+def mfccVectors(soundfile):    #creates mfcc vectors for a sound file
     x, samplerate = sf.read(soundfile)
 
 
@@ -39,16 +43,16 @@ def mfccVectors(soundfile):
     return mel_magnitudes
 
 
-def mfccFileCreator():
-    for audiofile in sorted(glob.glob('training_data/audio/*.wav')):
+def mfccFileCreator(): ## creates mfcc files for entire folder
+    for audiofile in sorted(glob.glob('test_data/audio/*.wav')):
         mfccData = mfccVectors(audiofile)
         print(audiofile)
-        mfccName = audiofile.removeprefix('training_data/audio').replace(".wav", ".npy")
-        filepath = 'training_data/mfccs/' + mfccName
+        mfccName = audiofile.removeprefix('test_data/audio').replace(".wav", ".npy")
+        filepath = 'test_data/mfccs/' + mfccName
         np.save(filepath, mfccData)
 
 
-def mel_vector_creator(triangles, mag_len, sample_rate):
+def mel_vector_creator(triangles, mag_len, sample_rate): #creates mel vector
     frequency_resolution = sample_rate / mag_len
     frequencies = np.arange(mag_len * frequency_resolution)
     min_frequency = hz_to_mel(frequencies[0])
@@ -93,7 +97,7 @@ def mel_to_hz(mel):
     return 700 * (10 ** (mel / 2595) - 1)
 
 
-def linearRectangularFilterbank(magspec, fbankNum):
+def linearRectangularFilterbank(magspec, fbankNum): #unused linear filterbank
     fbank = np.zeros(fbankNum)
     for i in range(len(fbank)):
         fbank[i] = sum(magspec[i * 32:i + 32])
@@ -101,4 +105,9 @@ def linearRectangularFilterbank(magspec, fbankNum):
 
 
 mfccFileCreator()
+
+### EXAMPLE MFCC GRAPH
+
+mfcc_path = 'training_data/mfccs/Amelia_06.npy'
+mfcc  = np.load(mfcc_path)
 

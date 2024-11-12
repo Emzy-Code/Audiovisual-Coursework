@@ -1,19 +1,22 @@
-import glob
-import re
-from typing import final
+# >>>>>>Speech Recogniser <<<<<<<
+#
+#  Uses model created in acoustic_modelling.py to predict names spoken
+#  Labelling method: Unlike in "training_data" , the last number indicates data order
+#  Input: ./test_data/mfccs
+#  Required file: ./my_model.keras
+#  ((Tip: run "acousting_modelling.py" if non-existent or model changes are made))
+#  Output: Predicted names, accuracy score
+#
 
+import glob
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 from pathlib import Path
-
 from numba.core.cgutils import sizeof
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from keras._tf_keras.keras.utils import to_categorical
-from keras._tf_keras.keras import Sequential
-from keras._tf_keras.keras.layers import Dense, Activation, Flatten, Conv2D, InputLayer, MaxPooling2D
-from keras._tf_keras.keras.optimizers import Adam
 from keras._tf_keras.keras.models import load_model
 from sklearn.preprocessing import LabelEncoder
 
