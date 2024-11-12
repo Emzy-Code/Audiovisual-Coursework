@@ -19,3 +19,26 @@ Testing Data:
 -
 - Contains at least 10 unique recordings of each name 
 - Audio to be processed by the machine (using Training Data)
+
+Names:
+- 
+- 0: Muneeb
+- 1: Zachary
+- 2: Sebastian
+- 3: Danny
+- 4: Louis
+- 5: Ben
+- 6: Seb
+- 7: Ryan
+- 8: Krish
+- 9: Christopher
+- 10: Kaleb
+- 11: Konark
+- 12: Amelia
+- 13: Emilija
+- 14: Naima
+- 15: Leo
+- 16:Noah
+- 17: Josh
+- 18: Joey
+- 19: Kacper

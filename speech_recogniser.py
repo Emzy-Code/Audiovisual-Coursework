@@ -87,7 +87,12 @@ if len(labels)>0:
     predicted = np.argmax(predicted_probs, axis=1)
     print("Predicted: ", predicted)
     actual = np.argmax(y, axis=1)
+
+
+    #predicted is an array containing the numerical value corresponding with each name predicted by the machine
     #print(np.unique(predicted))
+    #^ Prints unique values in the array named 'predicted'
+
     accuracy = metrics.accuracy_score(actual, predicted)
     print(f'Accuracy: {accuracy * 100}%')
     #print(X[0, :, :])

@@ -80,31 +80,6 @@ data = np.array(data)
 data = data / np.max(data)
 
 LE = LabelEncoder()
-
-
-classes = [
-    'Muneeb',
-    'Zachary',
-    'Sebastian',
-    'Danny',
-    'Louis',
-    'Ben',
-    'Seb',
-    'Ryan',
-    'Krish',
-    'Christopher',
-    'Kaleb',
-    'Konark',
-    'Amelia',
-    'Emilija',
-    'Naima',
-    'Leo',
-    'Noah',
-    'Josh',
-    'Joey',
-    'Kacper',
-]
-
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
 print("data len", len(data))
@@ -117,12 +92,12 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'], optimizer=Adam(learning_rate=learning_rate))
 model.summary()
 
-num_epochs = 20    # gives ~80%
+num_epochs = 20
 num_batch_size = 15
-# comment
+#This arrangement gives roughly 75-80% accuracy
 
-history = model.fit(X_train, y_train, validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,
-                    verbose=1)
+history = model.fit(X_train, y_train,
+                    validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,verbose=1)
 model.save_weights('name_classification.weights.h5')
 model.save('my_model.keras') # comment out whilst debugging
 model = create_model()
@@ -145,6 +120,8 @@ plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Validation'], loc='upper left')
 plt.show()
+#Sets up labeling for graphs
+
 
 predicted_probs = model.predict(X_test, verbose=0)
 predicted = np.argmax(predicted_probs, axis=1)
@@ -153,8 +130,7 @@ print(np.unique(predicted))
 accuracy = metrics.accuracy_score(actual, predicted)
 print(f'Accuracy: {accuracy * 100}%')
 print(X_test[0, :, :])
-predicted_prob = model.predict(np.expand_dims(X_test[0, :, :],
-                                              axis=0), verbose=0)
+predicted_prob = (model.predict(np.expand_dims(X_test[0, :, :], axis=0), verbose=0))
 predicted_id = np.argmax(predicted_prob, axis=1)
 predicted_class = LE.inverse_transform(predicted_id)
 
@@ -168,7 +144,6 @@ for i in range(len(predicted)):
     actualLabels.append(matrixLabels[actual[i]])
 print(actualLabels)
 print(predictedLabels)
-
 confusion_matrix = metrics.confusion_matrix(actual, predicted, labels=list(range(20)))
 cm_display =(
     metrics.ConfusionMatrixDisplay
