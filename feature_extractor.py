@@ -9,7 +9,7 @@ import soundfile as sf
 from math import floor
 import glob
 from scipy.fftpack import dct
-
+import matplotlib.pyplot as plt
 
 def byFrameSpectraCalculator(x, frameLength):  # calculates magnitudes by frame
     numSamples = len(x)
@@ -103,7 +103,7 @@ mfccFileCreator()
 
 ### EXAMPLE MFCC GRAPH
 
-# mfcc_path = 'training_data/mfccs/Amelia_06.npy'
-# mfcc  = np.load(mfcc_path)
-# plt.imshow(mfcc)
-# plt.show()
+mfcc_path = 'training_data/mfccs/Amelia_06.npy'
+mfcc  = np.load(mfcc_path)
+plt.imshow(mfcc)
+plt.show()

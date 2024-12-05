@@ -39,7 +39,7 @@ classes = ['Muneeb',
            'Joey',
            'Kacper']
 classes = sorted(classes)
-print("classes: ", classes)
+#print("classes: ", classes)
 max_frames = 21
 labels = []
 data = []
@@ -63,18 +63,18 @@ if len(labels) > 0:
 
     def get_number(order):
         num = order.split('_')[1]
-        print("num: ", num)
+        #print("num: ", num)
         return int(num)
 
 
-    print("order: ", orderedList)
+    #print("order: ", orderedList)
     orderedList = (sorted(orderedList, key=lambda order: get_number(order)))
-    print("sorted: ", orderedList)
+    #print("sorted: ", orderedList)
     for i in range(len(orderedList)):
         positions.append(i)
 
-    print("labels: ", labels)
-    print("Final Pos: ", finalPositions)
+    #print("labels: ", labels)
+    #print("Final Pos: ", finalPositions)
     LE = LabelEncoder()
     LE = LE.fit(classes)
     labels = to_categorical(LE.transform(labels))
@@ -85,7 +85,7 @@ if len(labels) > 0:
     model = load_model("my_model.keras")
     predicted_probs = model.predict(X, verbose=0)
     predicted = np.argmax(predicted_probs, axis=1)
-    print("Predicted: ", predicted)
+    #print("Predicted: ", predicted)
     actual = np.argmax(y, axis=1)
 
 
@@ -112,8 +112,8 @@ if len(labels) > 0:
         result.append(0)
         finalPositions.append(orderedList.index(unorderedList[i]))
 
-    print(positions)
-    print(finalPositions)
+    #print(positions)
+    #print(finalPositions)
 
     for i in range(len(predicted_classes)):
         result[finalPositions[i]] = predicted_classes[i]

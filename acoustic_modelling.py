@@ -19,7 +19,6 @@ from sklearn.model_selection import train_test_split
 
 
 
-
 classes = [
 'Muneeb',
 'Zachary',
@@ -74,8 +73,8 @@ for mfcc_file in sorted(glob.glob('training_data/mfccs/*.npy')):
     stemFilename = (Path(os.path.basename(mfcc_file))).stem
     label = stemFilename.split('_')
     labels.append(label[0])
+
 labels = np.array(labels)
-print(labels)
 data = np.array(data)
 data = data / np.max(data)
 
@@ -83,10 +82,11 @@ LE = LabelEncoder()
 
 LE = LE.fit(classes)
 labels = to_categorical(LE.transform(labels))
+print(labels)
 print("data len", len(data))
 
-X_train, X_tmp, y_train, y_tmp = train_test_split(data, labels, test_size=0.2, random_state=0)
-X_val, X_test, y_val, y_test = train_test_split(X_tmp, y_tmp, test_size=0.5, random_state=0)
+X_train, X_tmp, y_train, y_tmp = train_test_split(data, labels, test_size=0.2, random_state=0,stratify=labels)
+X_val, X_test, y_val, y_test = train_test_split(X_tmp, y_tmp, test_size=0.5, random_state=0,stratify=y_tmp)
 learning_rate = 0.01
 model = create_model()
 model.compile(loss='categorical_crossentropy',
