@@ -19,9 +19,10 @@ record_count = 0
 
 try:
     while True:
-        ws.call(requests.StartRecording())
         record_count += 1
         print(f"Video {record_count}")
+        ws.call(requests.SetFilenameFormatting("TESTNAME" + str(record_count)))
+        ws.call(requests.StartRecording())
         time.sleep(5)  # Record for 5 seconds
         # Stop recording
         ws.call(requests.StopRecording())
