@@ -2,6 +2,7 @@
 
 
 import time
+import math
 
 import obswebsocket
 from obswebsocket import requests, obsws
@@ -17,10 +18,32 @@ ws.connect()
 load_dotenv()
 record_count = 0
 
+classes = sorted(['Muneeb',
+           'Zachary',
+           'Sebastian',
+           'Danny',
+           'Louis',
+           'Ben',
+           'Seb',
+           'Ryan',
+           'Krish',
+           'Christopher',
+           'Kaleb',
+           'Konark',
+           'Amelia',
+           'Emilija',
+           'Naima',
+           'Leo',
+           'Noah',
+           'Josh',
+           'Joey',
+           'Kacper'])
+nameCount = 0
 try:
     while True:
         record_count += 1
-        print(f"Video {record_count}")
+        nameCount = nameCount + (1/20)
+        print(f"Video {record_count} \n Name: {classes[math.floor(nameCount)]}")
         ws.call(requests.SetFilenameFormatting("TESTNAME" + str(record_count)))
         ws.call(requests.StartRecording())
         time.sleep(5)  # Record for 5 seconds
