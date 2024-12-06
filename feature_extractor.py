@@ -11,6 +11,7 @@ import glob
 from scipy.fftpack import dct
 import matplotlib.pyplot as plt
 
+
 def byFrameSpectraCalculator(x, frameLength):  # calculates magnitudes by frame
     numSamples = len(x)
     numFrames = floor(numSamples / frameLength)
@@ -104,6 +105,6 @@ mfccFileCreator()
 ### EXAMPLE MFCC GRAPH
 
 mfcc_path = 'training_data/mfccs/Amelia_06.npy'
-mfcc  = np.load(mfcc_path)
+mfcc = np.load(mfcc_path)
 plt.imshow(mfcc)
 plt.show()

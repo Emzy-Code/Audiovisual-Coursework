@@ -1,9 +1,35 @@
-%faceDetector = vision.CascadeObjectDetector();
-lipDetector = vision.CascadeObjectDetector('Mouth');
-img = imread('emi_face.jpg');
-bboxes = step(lipDetector, img);
-detectedImg = insertObjectAnnotation(img, 'rectangle', bboxes, 'Lips');
-imshow(detectedImg);
-title(['Detected Lips']);
+function frameData = face_detector(video)
+
+function extracted_img = applyFeatureExtraction(img)
+    bboxes = step(lipDetector, img);
+    mouthRegion = imcrop(img,bboxes(1,:));
+    grayMouth = rgb2gray(mouthRegion);
+    extracted_img = edge(grayMouth,'canny');
+end
+
+
+v=VideoReader(video);
+lipDetector = vision.CascadeObjectDetector('Mouth','MergeThreshold',40);
+one_frame = readFrame(v);
+pointTracker = vision.PointTracker('MaxBidirectionalError', 2);
+extracted_frame = applyFeatureExtraction(one_frame);
+points = detectMinEigenFeatures(extracted_frame);
+initialize(pointTracker, points.Location, frame);
+frameData = struct('Points', {}, 'Validity', {}, 'Movement Vectors', {});
+k=1;
+while hasFrame(v)
+    one_frame = readFrame(v);
+    extracted_frame = applyFeatureExtraction(one_frame);
+    [points, validity] = step(tracker, extracted_frame);
+    frameData(k).Points = points;
+    frameData(k).Validity = validity; 
+    if frameIndex > 1
+        movementVectors = points - frameData.Points{frameIndex - 1};
+        frameData(k - 1).MovementVectors = movementVectors;
+    end
+    k=k+1
+    
+end
+end
 
 
