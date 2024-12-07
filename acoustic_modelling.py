@@ -16,8 +16,10 @@ from keras._tf_keras.keras.layers import Dense, Activation, Flatten, Conv2D, Inp
 from keras._tf_keras.keras.optimizers import Adam
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+import scipy.io as sio
 
-
+#boolean to indicate whether the format of the input is audio or visual
+inputFormat = False
 
 classes = [
 'Muneeb',
@@ -63,16 +65,30 @@ def create_model():
 data = []
 labels = []
 max_frames = 21
-for mfcc_file in sorted(glob.glob('training_data/mfccs/*.npy')):
-    mfcc_data = np.load(mfcc_file)
-    mfcc_data = np.pad(mfcc_data, ((0, 0), (0, max_frames - mfcc_data.shape[1])))
-    # if mfcc_data.shape[1] > max_frames:
-    #    max_frames = mfcc_data.shape[1]
-    data.append(mfcc_data)
 
-    stemFilename = (Path(os.path.basename(mfcc_file))).stem
-    label = stemFilename.split('_')
-    labels.append(label[0])
+if inputFormat:
+    for mfcc_file in sorted(glob.glob('video-training-data/audio/raw_audio/*.npy')):
+        mfcc_data = np.load(mfcc_file)
+        mfcc_data = np.pad(mfcc_data, ((0, 0), (0, max_frames - mfcc_data.shape[1])))
+        # if mfcc_data.shape[1] > max_frames:
+        #    max_frames = mfcc_data.shape[1]
+        data.append(mfcc_data)
+
+        stemFilename = (Path(os.path.basename(mfcc_file))).stem
+        label = stemFilename.split('_')
+        labels.append(label[0])
+else:
+    for movementVectorFile in sorted(glob.glob('video-training-data/videos/movement_vectors/*.mat')):
+        movementVectorData = sio.loadmat(movementVectorFile)
+        movementVectorData = np.pad(movementVectorFile, ((0, 0), (0, max_frames - movementVectorFile.shape[1])))
+        # if mfcc_data.shape[1] > max_frames:
+        #    max_frames = mfcc_data.shape[1]
+        data.append(movementVectorData)
+
+        stemFilename = (Path(os.path.basename(movementVectorFile))).stem
+        label = stemFilename.split('_')
+        labels.append(label[0])
+
 
 labels = np.array(labels)
 data = np.array(data)
@@ -96,6 +112,7 @@ model.summary()
 num_epochs = 20
 num_batch_size = 15
 #This arrangement gives roughly 75-80% accuracy
+
 
 history = model.fit(X_train, y_train,
                     validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,verbose=1)
