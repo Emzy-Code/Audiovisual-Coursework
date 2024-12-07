@@ -19,6 +19,9 @@ from sklearn.model_selection import train_test_split
 import scipy.io as sio
 
 #boolean to indicate whether the format of the input is audio or visual
+#True = audio
+#False = video
+
 inputFormat = False
 
 classes = [
@@ -116,8 +119,14 @@ num_batch_size = 15
 
 history = model.fit(X_train, y_train,
                     validation_data=(X_val, y_val), batch_size=num_batch_size, epochs=num_epochs,verbose=1)
+
+
 model.save_weights('name_classification.weights.h5')
-model.save('my_model.keras')  # comment out whilst debugging
+
+if inputFormat:
+    model.save('my_model_audio.keras')
+else:
+    model.save('my_model_video.keras')# comment out whilst debugging
 model = create_model()
 
 model.compile(loss='categorical_crossentropy',
