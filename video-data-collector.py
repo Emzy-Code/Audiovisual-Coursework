@@ -12,7 +12,6 @@ import os
 # Connect to OBS WebSocket
 load_dotenv()
 password = os.getenv('PASSWORD')
-print(password)
 ws = obsws("localhost", 4444)
 ws.connect()
 load_dotenv()
