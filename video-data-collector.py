@@ -44,7 +44,7 @@ cycleValidation = False
 while not cycleValidation:
     cycles = input("How many cycles: ")
     if cycles.isdigit():
-        cycleVal = True
+        cycleValidation = True
     else:
         print("Please enter an integer. ")
 
