@@ -39,12 +39,23 @@ classes = sorted(['Muneeb',
                   'Joey',
                   'Kacper'])
 nameCount = 0
-try:
-    while True:
+
+cycleValidation = False
+while not cycleValidation:
+    cycles = input("How many cycles: ")
+    if cycles.isdigit():
+        cycleVal = True
+    else:
+        print("Please enter an integer. ")
+
+for i in range(cycles):
         record_count += 1
-        nameCount = nameCount + (1 / 20)
-        print(f"Video {record_count} \n Name: {classes[math.floor(nameCount)]}")
-        string = f"TESTNAME {record_count}"
+        if nameCount <= 20:
+            nameCount += 1
+        else:
+            nameCount = 1
+        print(f"Video {record_count} \n Name: {classes[nameCount]}")
+        string = f"{classes[nameCount]}_{record_count}"
 
         response = ws.call(requests.StartRecording())
         time.sleep(5)  # Record for 5 seconds
@@ -52,7 +63,3 @@ try:
         ws.call(requests.StopRecording())
         ws.call(requests.SetFilenameFormatting(**{f'filename-formatting': string}))
         time.sleep(1)  # Short delay before starting again
-except KeyboardInterrupt:
-    pass
-finally:
-    ws.disconnect()
