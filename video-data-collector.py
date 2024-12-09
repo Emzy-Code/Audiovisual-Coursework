@@ -48,21 +48,23 @@ while not cycleValidation:
     else:
         print("Please enter an integer. ")
 
-for i in range(int(cycles)*20):
+for i in range(int(cycles)):
+    for j in range(20):
         record_count += 1
 
-        print(f"Video {record_count} \n Name: {classes[nameCount]}")
-        print(f"Cycle: {cycles}")
-        string = f"{classes[nameCount]}_{record_count}"
 
-        if nameCount <= 20:
+        print("nameCount: ",nameCount)
+        print(f"Video {record_count} \n Name: {classes[nameCount]}")
+        print(f"Cycle: {i+1}")
+        string = f"{classes[nameCount]}_{i}"
+        print("Name: ",string)
+        if nameCount < 19:
             nameCount += 1
         else:
-            nameCount = 1
-
-        response = ws.call(requests.StartRecording())
-        time.sleep(5)  # Record for 5 seconds
+            nameCount = 0
+        #ws.call(requests.SetFilenameFormatting(**{f'filename-formatting': string}))
+        #response = ws.call(requests.StartRecording())
+        #time.sleep(5)  # Record for 5 seconds
         # Stop recording
-        ws.call(requests.StopRecording())
-        ws.call(requests.SetFilenameFormatting(**{f'filename-formatting': string}))
-        time.sleep(1)  # Short delay before starting again
+        #ws.call(requests.StopRecording())
+        #time.sleep(1)  # Short delay before starting again

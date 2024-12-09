@@ -3,14 +3,15 @@ movementDirectory = 'video-training-data/videos/movement_vectors';
 audioDirectory = 'video-training-data/audio/raw_audio';
 file_list = dir(fullfile(inputDirectory,'*.mp4'));
 for k=1:length(file_list)
-    videoFile = fullfile(inputDir, videoFiles(k).name);
+    videoFile = fullfile(inputDirectory, file_list(k).name);
     v = VideoReader(videoFile);
-    audioData = v.AudioData;
+    [y,Fs] = audioread(filename);
+    audiowrite('outputfile.WAV',y,Fs);
     audioSampleRate = v.SampleRate;
     [~, name, ~] = fileparts(videoFile);
     audioFile = fullfile(audioDirectory, [name, '.wav']);
     audiowrite(audioFile,audioData,audioSampleRate);
     movement_vectors = face_detector(v);
     movementFile = fullfile(movementDirectory, [name, '.mat']);
-    save(movementFile,'movement_vectors')
+    save(movementFile,'movement_vectors');
 end

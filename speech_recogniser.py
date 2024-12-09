@@ -82,7 +82,7 @@ if len(labels) > 0:
     data = data / np.max(data)
 
     X, y = data, labels
-    model = load_model("my_model.keras")
+    model = load_model("my_model.keras") 
     predicted_probs = model.predict(X, verbose=0)
     predicted = np.argmax(predicted_probs, axis=1)
     #print("Predicted: ", predicted)

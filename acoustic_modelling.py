@@ -82,8 +82,8 @@ if inputFormat:
         labels.append(label[0])
 else:
     for movementVectorFile in sorted(glob.glob('video-training-data/videos/movement_vectors/*.mat')):
-        movementVectorData = sio.loadmat(movementVectorFile)
-        movementVectorData = np.pad(movementVectorFile, ((0, 0), (0, max_frames - movementVectorFile.shape[1])))
+        movementVectorData = np.array(sio.loadmat(movementVectorFile))
+        #movementVectorData = np.pad(movementVectorData, ((0, 0), (0, max_frames - movementVectorData.shape[1])))
         # if mfcc_data.shape[1] > max_frames:
         #    max_frames = mfcc_data.shape[1]
         data.append(movementVectorData)
