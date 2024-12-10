@@ -8,7 +8,8 @@ for k=1:length(file_list)
     [~, name, ~] = fileparts(videoFile);
     audioFile = fullfile(audioDirectory, [name, '.wav']);
     audiowrite(audioFile,audioData,audioSampleRate);
-    movement_vectors = face_detector(videoFile);
-    movementFile = fullfile(movementDirectory, [name, '.mat']);
-    save(movementFile,'movement_vectors');
+    points = face_detector(videoFile);
+    face_detector(videoFile);
+    movementFile = fullfile(movementDirectory, [name, '.csv']);
+    writematrix(points, movementFile);
 end

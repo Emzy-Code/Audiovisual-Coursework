@@ -2,7 +2,7 @@
 # This file takes in mfcc.npy files and uses them to train data according to various vals and configs
 # Outputs: Accuracy score and graphs for val loss and accuracy,
 # creates "my_model.keras" file to be used for speech_recogniser
-
+import csv
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,6 +17,7 @@ from keras._tf_keras.keras.optimizers import Adam
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 import scipy.io as sio
+import ast
 
 #boolean to indicate whether the format of the input is audio or visual
 #True = audio
@@ -25,26 +26,27 @@ import scipy.io as sio
 inputFormat = False
 
 classes = [
-'Muneeb',
-'Zachary',
-'Sebastian',
-'Danny',
-'Louis',
-'Ben',
-'Seb',
-'Ryan',
-'Krish',
+#'Muneeb',
+#'Zachary',
+#'Sebastian',
+#'Danny',
+#'Louis',
+#'Ben',
+#'Seb',
+#'Ryan',
+#'Krish',
 'Christopher',
-'Kaleb',
-'Konark',
-'Amelia',
-'Emilija',
-'Naima',
-'Leo',
-'Noah',
-'Josh',
-'Joey',
-'Kacper',
+#'Kaleb',
+#'Konark',
+'Amelia'
+    #,
+#'Emilija',
+#'Naima',
+#'Leo',
+#'Noah',
+#'Josh',
+#'Joey',
+#'Kacper',
 ]
 classes = sorted(classes)
 
@@ -53,11 +55,17 @@ def create_model():
     numClasses = len(classes)
 
     model = Sequential()
-    model.add(InputLayer(shape=(250, 21, 1)))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(3, 3)))
+    if inputFormat:
+        model.add(InputLayer(shape=(256, 21, 1)))
+        model.add(Conv2D(64, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(3, 3)))
+        model.add(Dense(256))
+    else:
+        model.add(InputLayer(shape=(145,2,1)))
+        model.add(Conv2D(64, (1, 1), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(1, 1)))
+        model.add(Dense(145))
     model.add(Flatten())
-    model.add(Dense(256))
     model.add(Activation('relu'))
     model.add(Dense(numClasses))
     model.add(Activation('softmax'))
@@ -67,10 +75,11 @@ def create_model():
 
 data = []
 labels = []
-max_frames = 21
+
 
 if inputFormat:
-    for mfcc_file in sorted(glob.glob('video-training-data/audio/raw_audio/*.npy')):
+    max_frames = 21    ####### 'training_data/mfccs/*.npy'        'video-training-data/audio/raw_audio/*.npy'
+    for mfcc_file in sorted(glob.glob('training_data/mfccs/*.npy')):
         mfcc_data = np.load(mfcc_file)
         mfcc_data = np.pad(mfcc_data, ((0, 0), (0, max_frames - mfcc_data.shape[1])))
         # if mfcc_data.shape[1] > max_frames:
@@ -80,22 +89,45 @@ if inputFormat:
         stemFilename = (Path(os.path.basename(mfcc_file))).stem
         label = stemFilename.split('_')
         labels.append(label[0])
+        print(labels)
 else:
-    for movementVectorFile in sorted(glob.glob('video-training-data/videos/movement_vectors/*.mat')):
-        movementVectorData = np.array(sio.loadmat(movementVectorFile))
-        #movementVectorData = np.pad(movementVectorData, ((0, 0), (0, max_frames - movementVectorData.shape[1])))
-        # if mfcc_data.shape[1] > max_frames:
-        #    max_frames = mfcc_data.shape[1]
-        data.append(movementVectorData)
+    max_frames = 145
+    r_file = open('video-training-data/videos/movement_vectors/vectors.txt','r')
+    csv_reader = csv.reader(r_file,delimiter=';')
 
-        stemFilename = (Path(os.path.basename(movementVectorFile))).stem
-        label = stemFilename.split('_')
+    for row in csv_reader:
+        name = row[0]
+        vectors = ast.literal_eval(row[1])
+        print(type(vectors))
+        vectors = np.array(vectors)
+        movement_vectors = np.pad(vectors, ((0, max_frames - vectors.shape[0]), (0, 0)))
+        print(movement_vectors.shape)
+        data.append(movement_vectors)
+        label = name.split('_')
         labels.append(label[0])
+    print(labels)
+    r_file.close()
+   # for movementVectorFile in sorted(glob.glob('video-training-data/videos/movement_vectors/*.mat')):
+    #    movementVectorData = sio.loadmat(movementVectorFile)
+     #   movementVectorData = movementVectorData['movement_vectors'][0,0]
+        #print(movementVectorData)
+        #movementVectorData = np.pad(movementVectorData, ((0, 0), (0, max_frames - movementVectorData.shape[1])))
+        #if mfcc_data.shape[1] > max_frames:
+        #    max_frames = mfcc_data.shape[1]
+      #  print(movementVectorData)
+      #  data.append(movementVectorData)
+
+       # stemFilename = (Path(os.path.basename(movementVectorFile))).stem
+       # label = stemFilename.split('_')
+       # labels.append(label[0])
 
 
 labels = np.array(labels)
 data = np.array(data)
-data = data / np.max(data)
+data = data/np.argmax(data)
+print(len(data))
+print(data.shape)
+
 
 LE = LabelEncoder()
 
@@ -170,7 +202,7 @@ for i in range(len(predicted)):
     actualLabels.append(matrixLabels[actual[i]])
 print(actualLabels)
 print(predictedLabels)
-confusion_matrix = metrics.confusion_matrix(actual, predicted, labels=list(range(20)))
+confusion_matrix = metrics.confusion_matrix(actual, predicted, labels=list(range(2)))
 cm_display = (
     metrics.ConfusionMatrixDisplay
     (confusion_matrix=confusion_matrix, display_labels=matrixLabels)  # labels data with corresponding names

@@ -82,9 +82,20 @@ if len(labels) > 0:
     data = data / np.max(data)
 
     X, y = data, labels
-    model = load_model("my_model.keras") 
-    predicted_probs = model.predict(X, verbose=0)
-    predicted = np.argmax(predicted_probs, axis=1)
+    model_audio = load_model("my_model.keras")
+    model_video = load_model("my_model_video.keras")
+    predicted = []
+    for i in range(len(X)):
+        predicted_probs_audio = model_audio.predict([i], verbose=0)
+        predicted_probs_video = model_audio.predict([i], verbose = 0)
+        predicted_audio = np.argmax(predicted_probs_audio,axis=1)
+        predicted_video = np.argmax(predicted_probs_video,axis=1)
+        if predicted_probs_audio[predicted_audio]>predicted_probs_video[predicted_video]:
+            predicted.append(predicted_audio)
+        else:
+            predicted.append(predicted_video)
+
+   # predicted = np.argmax(predicted_probs, axis=1)
     #print("Predicted: ", predicted)
     actual = np.argmax(y, axis=1)
 
@@ -97,10 +108,10 @@ if len(labels) > 0:
 
     accuracy = metrics.accuracy_score(actual, predicted)
     print(f'Accuracy: {accuracy * 100}%')
-    # print(X[0, :, :])
-    predicted_prob = model.predict(np.expand_dims(X[0, :, :],
-                                                  axis=0), verbose=0)
-    predicted_id = np.argmax(predicted_prob, axis=1)
+    # print(X[0, :, :])    # REMEMEBER TO QUERY RYAN ABOUT WHAT THIS EVEN DOES !!!!!
+   # predicted_prob = model.predict(np.expand_dims(X[0, :, :],
+                                                  #axis=0), verbose=0)
+    #predicted_id = np.argmax(predicted_prob, axis=1)
 
     predicted_classes = []
 
