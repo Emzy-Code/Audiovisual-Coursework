@@ -7,7 +7,7 @@ so the machine can make estimations at what the user might have said.
 General Info:
 -
 - File Format: **name_number.wav** (example: **ryan_00.wav**)
-- Recording Device:
+- Recording Device: Realtek(R) Audio
 - Voice Actor: Emilija
 
 Training Data:
